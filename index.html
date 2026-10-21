@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Легкий старт - платформа адаптации иностранных студентов</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Основная иконка -->
+  <link rel="icon" type="image/png" sizes="32x32" href="icon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="icon/favicon-16x16.png">
+
+  <!-- Для Apple (добавление на главный экран) -->
+  <link rel="apple-touch-icon" sizes="180x180" href="icon/apple-touch-icon.png">
+  <style>
+    :root {
+      /* Основные цвета */
+      --bg-body: #f0f2f5;
+      --bg-card: #ffffff;
+      --accent: #4ade80; /* Чуть более насыщенный зеленый */
+      --accent-glow: rgba(74, 222, 128, 0.4);
+      --accent-soft: #dcfce7;
+      
+      /* Текст */
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+
+      /* Декорации */
+      --radius-lg: 32px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --radius-pill: 999px;
+      
+      /* Тени и эффекты */
+      --shadow-soft: 0 20px 40px -10px rgba(0, 0, 0, 0.08);
+      --shadow-glow: 0 0 40px rgba(74, 222, 128, 0.15);
+      --border-light: rgba(255, 255, 255, 0.8);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      
+      --container-width: 1160px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background: var(--bg-body);
+      /* Добавляем subtle mesh gradient на фон */
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(74, 222, 128, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(59, 130, 246, 0.08) 0px, transparent 50%);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center; /* Центрируем Hero по вертикали, раз остальные секции убраны */
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--container-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+    }
+
+    .navbar-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .nav-logo {
+        font-weight: 700;
+        font-size: 16px;
+        color: var(--text-main);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .nav-logo-dot {
+        width: 10px;
+        height: 10px;
+        background: var(--accent);
+        border-radius: 50%;
+        box-shadow: 0 0 12px var(--accent);
+    }
+
+    .nav-slogan {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none; /* Скрываем на совсем малых экранах по умолчанию */
+    }
+    @media(min-width: 768px) {
+        .nav-slogan { display: block; }
+    }
+
+    /* Custom Select Styling */
+    .lang-select-wrapper {
+      position: relative;
+    }
+
+    .lang-select {
+      appearance: none;
+      -webkit-appearance: none;
+      padding: 8px 32px 8px 14px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(0,0,0,0.08);
+      background: #fff;
+      color: var(--text-main);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: all 0.2s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .lang-select:hover {
+      border-color: rgba(0,0,0,0.2);
+    }
+
+    .lang-select-arrow {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      width: 10px;
+      height: 10px;
+      fill: var(--text-muted);
+    }
+
+    /* HERO */
+    .hero {
+      padding: 60px 0;
+      width: 100%;
+    }
+
+    .hero-card {
+      /* окно делаем более прозрачным и добавляем фон с логотипом */
+      background-color: rgba(255, 255, 255, 0.4);
+      background-image: url('img/1.jpg');
+      background-size: contain;
+      background-position: left;
+      background-repeat: no-repeat;
+      background-blend-mode: lighten;
+
+      backdrop-filter: blur(24px);
+      border: 1px solid #fff;
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      box-shadow: 
+        0 4px 6px -1px rgba(0, 0, 0, 0.02),
+        0 20px 40px -8px rgba(0, 0, 0, 0.06);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      position: relative;
+      overflow: hidden;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* Декоративный бэкграунд внутри карточки */
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74, 222, 128, 0.15), transparent 70%);
+      top: -200px;
+      right: -200px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-left {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 24px;
+      animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-badge {
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: #1e293b;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      width: fit-content;
+      box-shadow: 0 4px 12px rgba(30, 41, 59, 0.3);
+    }
+
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 2s infinite;
+    }
+
+    .hero-title {
+      font-size: clamp(32px, 4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--text-main);
+      line-height: 1.1;
+    }
+
+    .hero-highlight {
+      color: #166534;
+      background: linear-gradient(120deg, #bbf7d0 0%, #86efac 100%);
+      padding: 2px 10px;
+      border-radius: 12px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 90%;
+      line-height: 1.6;
+    }
+
+    .btn-primary {
+      padding: 14px 28px;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      background: #000;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      width: fit-content;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.4);
+      background: #111;
+    }
+
+    .hero-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      animation: slideInRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+    }
+
+    /* DEVICE MOCKUP */
+    .hero-device {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 40px;
+      background: #0f172a;
+      padding: 12px;
+      box-shadow: 
+        0 30px 60px -12px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 2px rgba(255,255,255,0.1);
+      transform: rotateY(-5deg) rotateX(2deg);
+      transition: transform 0.3s ease;
+    }
+    
+    .hero-device:hover {
+        transform: rotateY(0deg) rotateX(0deg);
+    }
+
+    .hero-device-inner {
+        background: #f8fafc;
+        border-radius: 32px;
+        overflow: hidden;
+        height: 100%;
+        min-height: 480px; /* Фикс высоты */
+        position: relative;
+    }
+
+    /* StatusBar имитация */
+    .device-status-bar {
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        font-size: 10px;
+        font-weight: 600;
+        color: #0f172a;
+        margin-top: 4px;
+    }
+    .notch {
+        width: 100px;
+        height: 20px;
+        background: #0f172a;
+        border-bottom-left-radius: 12px;
+        border-bottom-right-radius: 12px;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .hero-device-screen {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .screen-header {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 10px;
+    }
+    .screen-title {
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    .screen-subtitle {
+        font-size: 11px;
+        color: #64748b;
+        margin-top: 2px;
+    }
+    .screen-tag {
+        font-size: 10px;
+        font-weight: 600;
+        background: #dcfce7;
+        color: #15803d;
+        padding: 4px 8px;
+        border-radius: 6px;
+    }
+
+    .task-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .task-item {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,0.04);
+        padding: 12px;
+        border-radius: 14px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        transition: transform 0.2s;
+    }
+    .task-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .task-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    .task-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: #334155;
+    }
+    .task-meta {
+        font-size: 10px;
+        color: #94a3b8;
+    }
+    
+    /* Progress bar in task */
+    .task-progress-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 10px;
+        color: #64748b;
+    }
+    .task-progress-track {
+        flex: 1;
+        height: 6px;
+        background: #f1f5f9;
+        border-radius: 99px;
+        overflow: hidden;
+    }
+    .task-progress-bar {
+        height: 100%;
+        background: var(--accent);
+        width: 70%;
+        border-radius: 99px;
+    }
+
+    /* Floating Card */
+    .hero-floating-card {
+      position: absolute;
+      right: -20px;
+      bottom: 40px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 20px;
+      padding: 16px;
+      width: 220px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      animation: float 6s ease-in-out infinite;
+      z-index: 10;
+    }
+
+    .float-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+    .float-icon {
+        background: #fee2e2;
+        color: #ef4444;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+    }
+    .float-title {
+        font-size: 12px;
+        font-weight: 700;
+        color: #0f172a;
+    }
+    .float-body {
+        font-size: 11px;
+        color: #475569;
+        line-height: 1.4;
+        margin-bottom: 10px;
+    }
+    .float-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        background: #f0fdf4;
+        border: 1px solid #dcfce7;
+        border-radius: 99px;
+        font-size: 10px;
+        color: #15803d;
+        font-weight: 500;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 32px 0;
+      font-size: 12px;
+      color: var(--text-light);
+      text-align: center;
+      border-top: 1px solid rgba(0,0,0,0.04);
+      margin-top: auto;
+    }
+
+    /* ANIMATIONS */
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(74, 222, 128, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 960px) {
+      .hero-card {
+        grid-template-columns: 1fr;
+        padding: 32px;
+        gap: 40px;
+      }
+      .hero-left {
+        align-items: center;
+        text-align: center;
+      }
+      .hero-right {
+        justify-content: center;
+      }
+      .hero-device {
+          max-width: 320px;
+          transform: none; /* Убираем поворот на мобильном */
+      }
+      .hero-floating-card {
+          right: -10px;
+          bottom: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title {
+        font-size: 28px;
+      }
+      .hero-card {
+        padding: 24px 20px;
+      }
+      .navbar-inner {
+          padding: 0 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <div class="nav-logo">
+          <div class="nav-logo-dot"></div>
+          <span>Легкий старт</span>
+      </div>
+      <div class="nav-slogan" data-i18n="logoSub">Платформа адаптации</div>
+      
+      <div class="lang-select-wrapper">
+        <select id="lang-select" class="lang-select">
+            <option value="ru">RU</option>
+            <option value="en">EN</option>
+            <option value="tg">TG</option>
+            <option value="fr">FR</option>
+            <option value="zh">中文</option>
+        </select>
+        <svg class="lang-select-arrow" viewBox="0 0 24 24">
+            <path d="M7 10l5 5 5-5z"></path>
+        </svg>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-card">
+          <div class="hero-left">
+            <div class="hero-badge">
+              <span class="hero-badge-dot"></span>
+              <span data-i18n="heroBadge">В разработке</span>
+            </div>
+            
+            <h1 class="hero-title">
+              <span data-i18n="heroTitleMain">Единая цифровая платформа</span><br>
+              <span class="hero-highlight" data-i18n="heroTitleHighlight">
+                адаптации студентов
+              </span>
+            </h1>
+            
+            <p class="hero-subtitle" data-i18n="heroSubtitle">
+              Помогаем иностранному студенту шаг за шагом пройти адаптацию в РФ.
+            </p>
+
+            <a href="dashboard.html" class="btn-primary">
+              <span data-i18n="heroBtnPrimary">Попробовать</span>
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+
+          <div class="hero-right">
+            <div class="hero-device">
+                <div class="notch"></div>
+                <div class="hero-device-inner">
+				<div class="hero-device-screen">
+                        <div class="screen-header">
+                            <div>
+                                <div class="screen-title" data-i18n="devChecklistTitle">Путь первокурсника</div>
+                                <div class="screen-subtitle" data-i18n="devChecklistSubtitle">Чек-лист адаптации</div>
+                            </div>
+                            <div class="screen-tag" data-i18n="devTagStep">3 из 5</div>
+                        </div>
+
+                        <div class="task-list">
+                            <div class="task-item">
+                                <div class="task-head">
+                                    <span class="task-title" data-i18n="devItem1Title">Общая адаптация</span>
+                                </div>
+                                <div class="task-progress-wrap">
+                                    <div class="task-progress-track">
+                                        <div class="task-progress-bar"></div>
+                                    </div>
+                                    <span>70%</span>
+                                </div>
+                            </div>
+
+                            <div class="task-item">
+                                <div class="task-head">
+                                    <span class="task-title" data-i18n="devItem2Title">Продлить визу</span>
+                                    <svg width="14" height="14" fill="#15803d" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                                </div>
+                                <span class="task-meta" style="color:#15803d;" data-i18n="devItem2Badge">Напоминание включено</span>
+                            </div>
+
+                             <div class="task-item">
+                                <div class="task-head">
+                                    <span class="task-title" data-i18n="devItem3Title">Контакты куратора</span>
+                                </div>
+                                <span class="task-meta" data-i18n="devItem3Badge">Сохранено</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-floating-card">
+                    <div class="float-header">
+                        <div class="float-icon">!</div>
+                        <div class="float-title" data-i18n="devFloatTitle">Важно: Регистрация</div>
+                    </div>
+                    <div class="float-body" data-i18n="devFloatBody">
+                        Осталось 3 дня до подачи документов. Подготовьте паспорт.
+                    </div>
+                    <div class="float-status">
+                        <span style="width:6px; height:6px; background:#15803d; border-radius:50%;"></span>
+                        <span data-i18n="devFloatPill">Активно</span>
+                    </div>
+                </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer data-i18n="footerText">
+    © 2025 Легкий старт • Платформа адаптации иностранных студентов
+  </footer>
+</div>
+
+<script>
+  const translations = {
+    ru: {
+      logoSub: "Платформа адаптации",
+      heroBadge: "В разработке",
+      heroTitleMain: "Единая цифровая платформа",
+      heroTitleHighlight: "адаптации студентов",
+      heroSubtitle: "Помогаем зарубежному студенту шаг за шагом пройти адаптацию в РФ",
+      heroBtnPrimary: "Попробовать",
+      devChecklistTitle: "План действий",
+      devChecklistSubtitle: "Чек-лист",
+      devTagStep: "3 из 5",
+      devItem1Title: "Общая адаптация",
+      devItem2Title: "Продлить визу",
+      devItem2Badge: "Напоминание вкл.",
+      devItem3Title: "Важные контакты",
+      devItem3Badge: "Сохранено",
+      devFloatTitle: "Важно: Регистрация",
+      devFloatBody: "Осталось 3 дня до подачи. Подготовьте паспорт.",
+      devFloatPill: "Напоминания в разработке",
+      footerText: "© 2025 Легкий старт • Платформа адаптации иностранных студентов"
+    },
+    en: {
+      logoSub: "Adaptation Platform",
+      heroBadge: "In development",
+      heroTitleMain: "Unified Digital Platform",
+      heroTitleHighlight: "for Student Adaptation",
+      heroSubtitle: "Helping students step-by-step with adaptation and bureaucracy in Russia.",
+      heroBtnPrimary: "Try it out",
+      devChecklistTitle: "Onboarding plan",
+      devChecklistSubtitle: "Checklist",
+      devTagStep: "3 of 5",
+      devItem1Title: "General adaptation",
+      devItem2Title: "Extend Visa",
+      devItem2Badge: "Reminder ON",
+      devItem3Title: "Important contacts",
+      devItem3Badge: "Saved",
+      devFloatTitle: "Urgent: Registration",
+      devFloatBody: "3 days left. Prepare your passport.",
+      devFloatPill: "Reminders in development",
+      footerText: "© 2025 Легкий старт • Platform for international student adaptation"
+    },
+    tg: {
+      logoSub: "Платформаи мутобиқшавӣ",
+      heroBadge: "Дар ҳоли таҳия",
+      heroTitleMain: "Платформаи рақамӣ",
+      heroTitleHighlight: "барои мутобиқшавӣ",
+      heroSubtitle: "Ба донишҷӯ қадам ба қадам барои мутобиқшавӣ дар Русия кӯмак мекунем",
+      heroBtnPrimary: "Санҷидан",
+      devChecklistTitle: "Нақшаи боргирӣ",
+      devChecklistSubtitle: "Рӯйхати тафтиш",
+      devTagStep: "3 аз 5",
+      devItem1Title: "Мутобиқсозии умумӣ",
+      devItem2Title: "Тамдиди виза",
+      devItem2Badge: "Ёдрас фаъол",
+      devItem3Title: "Алоқаҳои муҳим",
+      devItem3Badge: "Нигоҳ дошта шуд",
+      devFloatTitle: "Муҳим: Бақайдгирӣ",
+      devFloatBody: "3 рӯз монд. Шиносномаро омода кунед.",
+      devFloatPill: "Ёдраскуниҳо дар рушд",
+      footerText: "© 2025 Легкий старт • Платформаи мутобиқшавии донишҷӯёни хориҷӣ"
+    },
+    fr: {
+       logoSub: "Plateforme d’adaptation",
+       heroBadge: "En développement",
+       heroTitleMain: "Plateforme numérique",
+       heroTitleHighlight: "pour l’intégration",
+       heroSubtitle: "Nous aidons l'étudiant à passer l'adaptation en Russie.",
+       heroBtnPrimary: "Essayer",
+       devChecklistTitle: "Plan d'intégration",
+       devChecklistSubtitle: "Liste de contrôle",
+       devTagStep: "3 sur 5",
+       devItem1Title: "Adaptation générale",
+       devItem2Title: "Prolonger le visa",
+       devItem2Badge: "Rappel activé",
+       devItem3Title: "Contacts importants",
+       devItem3Badge: "Sauvegardé",
+       devFloatTitle: "Important: Enreg.",
+       devFloatBody: "J-3. Préparez votre passeport.",
+       devFloatPill: "Rappels en cours de développement",
+       footerText: "© 2025 Легкий старт • Plateforme d’adaptation"
+    },
+    zh: {
+       logoSub: "适应平台",
+       heroBadge: "开发中",
+       heroTitleMain: "统一数字平台",
+       heroTitleHighlight: "用于学生适应",
+       heroSubtitle: "帮助学生逐步完成在俄罗斯的适应和手续。",
+       heroBtnPrimary: "试用",
+       devChecklistTitle: "入职计划",
+       devChecklistSubtitle: "清单",
+       devTagStep: "3 / 5",
+       devItem1Title: "一般适应",
+       devItem1Sub: "9月12日前",
+       devItem2Title: "延长签证",
+       devItem2Badge: "提醒开启",
+       devItem3Title: "重要联系人",
+       devItem3Badge: "已保存",
+       devFloatTitle: "重要：注册",
+       devFloatBody: "仅剩3天。请准备护照。",
+       devFloatPill: "开发中的提醒",
+       footerText: "© 2025 Легкий старт • 国际学生适应平台"
+    }
+  };
+
+  const defaultLang = "ru";
+
+  function setLanguage(lang) {
+    const dict = translations[lang] || translations[defaultLang];
+    document.querySelectorAll("[data-i18n]").forEach(el => {
+      const key = el.getAttribute("data-i18n");
+      const text = dict[key] || translations[defaultLang][key] || "";
+      if (text) {
+        el.innerHTML = text;
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const select = document.getElementById("lang-select");
+    if (select) {
+      select.addEventListener("change", (e) => {
+        setLanguage(e.target.value);
+      });
+      // Инициализация
+      setLanguage(select.value || defaultLang);
+    }
+  });
+</script>
+</body>
+</html>
